@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Birthday Cake 🎂</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      #mainTitle {
+        font-size: 32px;
+        font-family: 'Pixelify Sans', sans-serif;
+        margin-bottom: 8px;
+      }
+
+      #subTitle {
+        font-size: 18px;
+        font-family: 'Pixelify Sans', sans-serif;
+        color: #555;
+      }
+
+      body {
+        background-color: #E6E0F8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="birthdayText"></div>
+      <div class="cake-container">
+        <div class="cake" id="cake"></div>
+      </div>
+      <audio id="birthdaySong" preload="auto">
+        <source src="Happy Birthday (Piano Version) - Helmut Schenker.mp3" type="audio/mpeg">
+      </audio>
+      <audio id="harleySong" preload="auto">
+        <source src="Katy Perry - Harleys in Hawaii - (Male version) - (Lyrics) - Dani Danone.mp3" type="audio/mpeg">
+      </audio>
+      <audio id="yourSongId" preload="auto">
+        <source src="na-de-dil-pardesi-nu-dj-kawal-remix-jogi-2025-viral-bollywood-mix-dj-kawal_3OyKGoKv.mp3" type="audio/mpeg">
+      </audio>
+      <audio id="voiceMessage" preload="auto">
+        <source src="Recording.m4a" type="audio/mp4">
+      </audio>
+
+      <button id="blowButton" style="margin-top: 30px; padding: 10px 20px; font-size: 16px; cursor: pointer; font-family: 'Pixelify Sans', sans-serif;">Blow Candles</button>
+      
+      <button id="voiceBtn" style="position: fixed; right: 50px; top: 50%; transform: translateY(-50%); padding: 20px 25px; font-size: 14px; cursor: pointer; font-family: 'Pixelify Sans', sans-serif; background-color: #D4A5E3; color: #333; border: 3px solid #333; border-radius: 15px; max-width: 220px; text-align: center; font-weight: 500;">
+        🎤 A Message From Me To You
+      </button>
+
+      <button class="song-message-btn" onclick="document.getElementById('harleySong').play()" style="position: fixed; left: 50px; top: 50%; transform: translateY(-50%); padding: 16px 18px; font-size: 13px; cursor: pointer; font-family: 'Pixelify Sans', sans-serif; background-color: #e8d5f2; color: #333; border: 3px solid #333; border-radius: 4px; max-width: 200px;">
+        <span>🏍️ Harleys in Hawaii</span>
+        <span>Cruising into another year like Harleys in Hawaii 🌴</span>
+        <span>Happy Birthday to my favorite person and my favorite adventure. ❤️</span>
+      </button>
+
+      <button class="song-message-btn" onclick="document.getElementById('yourSongId').play()" style="position: fixed; left: 50px; top: 70%; transform: translateY(-50%); padding: 16px 18px; font-size: 13px; cursor: pointer; font-family: 'Pixelify Sans', sans-serif; background-color: #d4a5e3; color: #333; border: 3px solid #333; border-radius: 4px; max-width: 200px;">
+        here's your current obsession!I love you and hope all your dreams come true <3
+      </button>
+
+      <div style="position: fixed; right: 50px; bottom: 100px; text-align: center;">
+        <img src="c:\Users\Adwika\Downloads\cb8121fa3c2b40341f3661706a353aac-removebg-preview.png" alt="Birthday person" style="width: 200px; height: auto;">
+        <div style="background: white; border: 2px solid #333; border-radius: 50px; padding: 10px 15px; margin-top: 30px; font-family: 'Pixelify Sans'; font-size: 14px; display: inline-block;">
+          Happy Birthday from mary!
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Read URL params
+      const params = new URLSearchParams(window.location.search);
+      const name = params.get("name") || "Akshu";
+      let candleCount = parseInt(params.get("candles")) || 4;
+      candleCount = Math.min(Math.max(candleCount, 1), 30);
+
+      const birthdayText = document.getElementById("birthdayText");
+      birthdayText.innerHTML = `
+        <div id="mainTitle">Happy Birthday, ${name}!</div>
+        <div id="subTitle">Make a wish and blow candles!</div>
+      `;
+
+      const cake = document.getElementById("cake");
+
+      const colors = [
+        "green-candle",
+        "purple-candle",
+        "blue-candle",
+        "yellow-candle",
+      ];
+      const CAKE_VISUAL_WIDTH = 35;
+
+      function createCandles(count) {
+        cake.innerHTML = "";
+        const CANDLE_VISUAL_WIDTH = 2;
+        const availableWidth = CAKE_VISUAL_WIDTH;
+        const candlesPerRow = 6;
+        const rowCount = Math.ceil(count / candlesPerRow);
+        const shiftAmount = 4;
+
+        for (let i = 0; i < count; i++) {
+          const candle = document.createElement("div");
+          candle.classList.add("candle");
+          const colorClass = colors[Math.floor(Math.random() * colors.length)];
+          candle.classList.add(colorClass);
+
+          const row = Math.floor(i / candlesPerRow);
+          const col = i % candlesPerRow;
+          const totalCandlesInRow = Math.min(
+            candlesPerRow,
+            count - row * candlesPerRow
+          );
+          const rowSpacing = availableWidth / (totalCandlesInRow + 1);
+
+          const leftBase = rowSpacing * (col + 1) - CANDLE_VISUAL_WIDTH / 2 + 5;
+          const rowShift = row % 2 === 0 ? 0 : shiftAmount;
+
+          candle.style.position = "absolute";
+          candle.style.top = `${10 + row * 3}px`;
+          candle.style.left = `${leftBase - rowShift + 4}px`;
+
+          cake.appendChild(candle);
+        }
+      }
+
+      createCandles(candleCount);
+
+      // === Double-Tap/Double-Click to Blow ===
+      let blown = false;
+      let lastTap = 0;
+      
+      function blowCandles() {
+        console.log("💨 Blowing candles!");
+        if (blown) {
+          // Light candles back up
+          const candles = document.querySelectorAll(".candle");
+          candles.forEach((candle) => {
+            candle.classList.remove("blown");
+          });
+          document.getElementById("subTitle").textContent = "Make a wish and blow candles!";
+          blown = false;
+        } else {
+          // Play birthday song
+          const song = document.getElementById("birthdaySong");
+          song.currentTime = 0;
+          song.play().catch(err => console.log("Audio play failed:", err));
+
+          // Blow out the candles
+          const candles = document.querySelectorAll(".candle");
+          candles.forEach((candle) => {
+            const delay = Math.random() * 300;
+            setTimeout(() => {
+              candle.classList.add("blown");
+            }, delay);
+          });
+
+          setTimeout(() => {
+            document.getElementById("subTitle").textContent = "Yayy! Wishing you the happiest 17th birthday ever!! 🎉";
+          }, 600);
+
+          blown = true;
+        }
+      }
+
+      function playVoiceMessage() {
+        console.log("🎤 Playing voice message!");
+        const voiceMessage = document.getElementById("voiceMessage");
+        voiceMessage.currentTime = 0;
+        voiceMessage.play().catch(err => console.log("Voice message play failed:", err));
+      }
+
+      // Double-click on cake container (larger target)
+      const cakeContainer = document.querySelector(".cake-container");
+      cakeContainer.addEventListener("dblclick", () => {
+        console.log("Double-click!");
+        blowCandles();
+      });
+
+      // Double-tap anywhere on the page
+      document.addEventListener("touchend", (e) => {
+        const now = Date.now();
+        if (now - lastTap < 300) {
+          console.log("Double-tap!");
+          blowCandles();
+        }
+        lastTap = now;
+      });
+
+      // Make containers clickable
+      cakeContainer.style.cursor = "pointer";
+      cakeContainer.style.userSelect = "none";
+
+      // Wire up buttons
+      document.getElementById("blowButton").addEventListener("click", blowCandles);
+      document.getElementById("voiceBtn").addEventListener("click", playVoiceMessage);
+
+      // Pause opposite song when one plays
+      const birthdaySong = document.getElementById("birthdaySong");
+      const harleySong = document.getElementById("harleySong");
+      const yourSongId = document.getElementById("yourSongId");
+      const voiceMessage = document.getElementById("voiceMessage");
+
+      birthdaySong.addEventListener("play", () => {
+        harleySong.pause();
+        yourSongId.pause();
+        voiceMessage.pause();
+      });
+
+      harleySong.addEventListener("play", () => {
+        birthdaySong.pause();
+        yourSongId.pause();
+        voiceMessage.pause();
+      });
+
+      yourSongId.addEventListener("play", () => {
+        birthdaySong.pause();
+        harleySong.pause();
+        voiceMessage.pause();
+      });
+
+      voiceMessage.addEventListener("play", () => {
+        birthdaySong.pause();
+        harleySong.pause();
+        yourSongId.pause();
+      });
+
+      console.log("✅ Ready! Double-click the cake or double-tap on mobile.");
+    </script>
+  </body>
+</html>
